@@ -428,86 +428,87 @@ with tab4:
                 else:
                     # Calculate portfolio statistics
                     expected_returns, cov_matrix = calculate_portfolio_stats(opt_portfolio_results)
-            asset_names = [
-                assets_df[assets_df['asset_id'] == aid]['name'].iloc[0]
-                for aid in opt_asset_ids
-                if aid in assets_df['asset_id'].values
-            ]
-            
-            # Generate efficient frontier
-            frontier_df = generate_efficient_frontier(
-                expected_returns,
-                cov_matrix,
-                n_points=50,
-                risk_free_rate=risk_free_rate
-            )
-            
-            # Find optimal portfolio
-            optimal_portfolio = mean_variance_optimization(
-                expected_returns,
-                cov_matrix,
-                target_return=target_return,
-                risk_free_rate=risk_free_rate
-            )
-            
-            # Display efficient frontier
-            st.subheader("Efficient Frontier")
-            fig_frontier = plot_efficient_frontier(
-                frontier_df,
-                optimal_portfolio=optimal_portfolio,
-                asset_names=asset_names
-            )
-            st.plotly_chart(fig_frontier, width='stretch')
-            
-            # Optimal portfolio weights
-            st.subheader("Optimal Portfolio Weights")
-            fig_weights = plot_portfolio_weights(
-                optimal_portfolio['weights'],
-                asset_names,
-                title="Optimal Portfolio Allocation"
-            )
-            st.plotly_chart(fig_weights, width='stretch')
-            
-            # Optimal portfolio metrics
-            st.subheader("Optimal Portfolio Metrics")
-            col1, col2, col3, col4 = st.columns(4)
-            col1.metric("Expected Return", f"{optimal_portfolio['expected_return']:.2%}")
-            col2.metric("Risk (Std Dev)", f"{optimal_portfolio['risk']:.2%}")
-            col3.metric("Sharpe Ratio", f"{optimal_portfolio['sharpe_ratio']:.2f}")
-            
-            # Calculate VaR/CVaR for optimal portfolio
-            # Approximate using portfolio return distribution
-            optimal_returns = np.zeros(n_sims)
-            for i, asset_id in enumerate(opt_asset_ids):
-                if asset_id in opt_portfolio_results:
-                    nav_paths = opt_portfolio_results[asset_id]['nav_paths']
-                    initial_nav = nav_paths[:, 0]
-                    final_nav = nav_paths[:, -1]
-                    asset_returns = (final_nav - initial_nav) / initial_nav
-                    optimal_returns += asset_returns * optimal_portfolio['weights'][i]
-            
-            opt_var = compute_var(optimal_returns, var_confidence)
-            opt_cvar = compute_cvar(optimal_returns, var_confidence)
-            col4.metric("VaR", f"{opt_var:.2%}")
-            
-            # Detailed weights table
-            weights_df = pd.DataFrame({
-                'Asset': asset_names,
-                'Weight': optimal_portfolio['weights'],
-                'Expected Return': expected_returns
-            })
-            weights_df = weights_df.sort_values('Weight', ascending=False)
-            weights_df['Weight'] = weights_df['Weight'].apply(lambda x: f"{x:.2%}")
-            weights_df['Expected Return'] = weights_df['Expected Return'].apply(lambda x: f"{x:.2%}")
-            st.dataframe(weights_df, width='stretch', hide_index=True)
-            
-            # Additional risk metrics
-            st.subheader("Optimal Portfolio Risk Metrics")
-            opt_risk_df = pd.DataFrame({
-                'Metric': ['VaR', 'CVaR'],
-                'Value': [f"{opt_var:.2%}", f"{opt_cvar:.2%}"]
-            })
-            st.dataframe(opt_risk_df, width='stretch', hide_index=True)
+                    
+                    asset_names = [
+                        assets_df[assets_df['asset_id'] == aid]['name'].iloc[0]
+                        for aid in opt_asset_ids
+                        if aid in assets_df['asset_id'].values
+                    ]
+                    
+                    # Generate efficient frontier
+                    frontier_df = generate_efficient_frontier(
+                        expected_returns,
+                        cov_matrix,
+                        n_points=50,
+                        risk_free_rate=risk_free_rate
+                    )
+                    
+                    # Find optimal portfolio
+                    optimal_portfolio = mean_variance_optimization(
+                        expected_returns,
+                        cov_matrix,
+                        target_return=target_return,
+                        risk_free_rate=risk_free_rate
+                    )
+                    
+                    # Display efficient frontier
+                    st.subheader("Efficient Frontier")
+                    fig_frontier = plot_efficient_frontier(
+                        frontier_df,
+                        optimal_portfolio=optimal_portfolio,
+                        asset_names=asset_names
+                    )
+                    st.plotly_chart(fig_frontier, width='stretch')
+                    
+                    # Optimal portfolio weights
+                    st.subheader("Optimal Portfolio Weights")
+                    fig_weights = plot_portfolio_weights(
+                        optimal_portfolio['weights'],
+                        asset_names,
+                        title="Optimal Portfolio Allocation"
+                    )
+                    st.plotly_chart(fig_weights, width='stretch')
+                    
+                    # Optimal portfolio metrics
+                    st.subheader("Optimal Portfolio Metrics")
+                    col1, col2, col3, col4 = st.columns(4)
+                    col1.metric("Expected Return", f"{optimal_portfolio['expected_return']:.2%}")
+                    col2.metric("Risk (Std Dev)", f"{optimal_portfolio['risk']:.2%}")
+                    col3.metric("Sharpe Ratio", f"{optimal_portfolio['sharpe_ratio']:.2f}")
+                    
+                    # Calculate VaR/CVaR for optimal portfolio
+                    # Approximate using portfolio return distribution
+                    optimal_returns = np.zeros(n_sims)
+                    for i, asset_id in enumerate(opt_asset_ids):
+                        if asset_id in opt_portfolio_results:
+                            nav_paths = opt_portfolio_results[asset_id]['nav_paths']
+                            initial_nav = nav_paths[:, 0]
+                            final_nav = nav_paths[:, -1]
+                            asset_returns = (final_nav - initial_nav) / initial_nav
+                            optimal_returns += asset_returns * optimal_portfolio['weights'][i]
+                    
+                    opt_var = compute_var(optimal_returns, var_confidence)
+                    opt_cvar = compute_cvar(optimal_returns, var_confidence)
+                    col4.metric("VaR", f"{opt_var:.2%}")
+                    
+                    # Detailed weights table
+                    weights_df = pd.DataFrame({
+                        'Asset': asset_names,
+                        'Weight': optimal_portfolio['weights'],
+                        'Expected Return': expected_returns
+                    })
+                    weights_df = weights_df.sort_values('Weight', ascending=False)
+                    weights_df['Weight'] = weights_df['Weight'].apply(lambda x: f"{x:.2%}")
+                    weights_df['Expected Return'] = weights_df['Expected Return'].apply(lambda x: f"{x:.2%}")
+                    st.dataframe(weights_df, width='stretch', hide_index=True)
+                    
+                    # Additional risk metrics
+                    st.subheader("Optimal Portfolio Risk Metrics")
+                    opt_risk_df = pd.DataFrame({
+                        'Metric': ['VaR', 'CVaR'],
+                        'Value': [f"{opt_var:.2%}", f"{opt_cvar:.2%}"]
+                    })
+                    st.dataframe(opt_risk_df, width='stretch', hide_index=True)
 
 # Footer
 st.sidebar.markdown("---")
