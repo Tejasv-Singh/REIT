@@ -1,0 +1,10 @@
+asset_id,name,asset_type,base_rent_or_tariff,current_occupancy_or_utilization,rent_tariff_growth_mu,rent_tariff_growth_sigma,operating_expense_ratio,debt_ratio,debt_cost,payout_ratio,current_nav,beta
+REIT001,Prime Office Tower,Office REIT,150.0,0.85,0.04,0.12,0.25,0.45,0.055,0.90,500000000,0.85
+REIT002,Metro Retail Plaza,Retail REIT,80.0,0.92,0.03,0.15,0.30,0.50,0.060,0.95,300000000,0.90
+REIT003,Industrial Warehouse Park,Industrial REIT,45.0,0.88,0.05,0.10,0.20,0.40,0.050,0.85,400000000,0.75
+INVIT001,National Highway Expressway,Road InvIT,2.5,0.95,0.06,0.08,0.15,0.60,0.065,0.95,800000000,0.70
+INVIT002,Regional Power Transmission,Power InvIT,1.8,0.98,0.04,0.06,0.12,0.55,0.058,0.90,600000000,0.65
+INVIT003,Coastal Port Terminal,Port InvIT,3.2,0.90,0.05,0.10,0.18,0.50,0.062,0.88,450000000,0.80
+REIT004,Residential Complex,Residential REIT,120.0,0.87,0.035,0.13,0.28,0.48,0.057,0.92,350000000,0.88
+INVIT004,Urban Metro Rail,Metro InvIT,4.5,0.93,0.055,0.09,0.20,0.58,0.064,0.93,700000000,0.72
+
