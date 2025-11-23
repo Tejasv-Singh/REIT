@@ -249,7 +249,7 @@ DEFAULT_SIMULATION_PARAMS = {
 
 This project is designed to be:
 
-- **Student-Friendly**: Well-commented code suitable for 2nd-year engineering students
+- **Student-Friendly**: Well-commented code suitable for everyone
 - **Production-Ready**: Proper error handling, input validation, modular design
 - **Extensible**: Easy to add new stochastic processes, risk metrics, or optimization methods
 - **Best Practices**: Follows DRY principles, type hints, comprehensive docstrings
